@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>QuizHero</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <canvas id="particles-canvas"></canvas>
+
+  <!-- ===== SCREEN: HOME ===== -->
+  <div id="screen-home" class="screen active">
+    <div class="logo-wrap">
+      <div class="logo">QUIZ<span>HERO</span></div>
+      <p class="tagline">Test your knowledge. Become a legend.</p>
+    </div>
+    <div class="card home-card">
+      <h2>Bienvenue, Champion !</h2>
+      <div class="input-wrap">
+        <input type="text" id="player-name" placeholder="Entrez votre nom..." maxlength="20" autocomplete="off">
+        <span class="input-icon">✏️</span>
+      </div>
+      <div class="btn-group">
+        <button id="btn-start" class="btn btn-primary"><span>🚀</span> Démarrer</button>
+        <button id="btn-leaderboard-home" class="btn btn-secondary"><span>🏆</span> Classement</button>
+      </div>
+    </div>
+    <div class="home-features">
+      <div class="feature"><span>🎯</span><p>7 Catégories</p></div>
+      <div class="feature"><span>⚡</span><p>3 Niveaux</p></div>
+      <div class="feature"><span>❤️</span><p>Système de vies</p></div>
+      <div class="feature"><span>💡</span><p>Indices disponibles</p></div>
+    </div>
+  </div>
+
+  <!-- ===== SCREEN: CATEGORIES ===== -->
+  <div id="screen-categories" class="screen">
+    <div class="screen-header">
+      <button class="btn-back" data-back="home">← Retour</button>
+      <h1>Choisissez une catégorie</h1>
+      <p class="screen-sub">10 questions par partie</p>
+    </div>
+    <div class="categories-grid">
+      <div class="category-card" data-category="science"><div class="cat-icon">🔬</div><h3>Science</h3><p>Physique, biologie, chimie</p></div>
+      <div class="category-card" data-category="history"><div class="cat-icon">📜</div><h3>Histoire</h3><p>Événements & civilisations</p></div>
+      <div class="category-card" data-category="geography"><div class="cat-icon">🌍</div><h3>Géographie</h3><p>Pays, capitales & paysages</p></div>
+      <div class="category-card" data-category="sports"><div class="cat-icon">⚽</div><h3>Sports</h3><p>Athlètes, records & règles</p></div>
+      <div class="category-card" data-category="entertainment"><div class="cat-icon">🎬</div><h3>Divertissement</h3><p>Films, musique & culture pop</p></div>
+      <div class="category-card" data-category="technology"><div class="cat-icon">💻</div><h3>Technologie</h3><p>Informatique, code & web</p></div>
+      <div class="category-card" data-category="math"><div class="cat-icon">🔢</div><h3>Mathématiques</h3><p>Nombres, formules & logique</p></div>
+    </div>
+  </div>
+
+  <!-- ===== SCREEN: DIFFICULTY ===== -->
+  <div id="screen-difficulty" class="screen">
+    <div class="screen-header">
+      <button class="btn-back" data-back="categories">← Retour</button>
+      <h1>Sélectionnez le niveau</h1>
+      <p class="screen-sub" id="selected-category-label"></p>
+    </div>
+    <div class="difficulty-grid">
+      <div class="difficulty-card easy" data-difficulty="easy">
+        <div class="diff-icon">🌱</div><h3>Facile</h3>
+        <p>30 sec par question</p><p class="diff-pts">+100 pts de base</p>
+        <div class="diff-stars">★☆☆</div>
+      </div>
+      <div class="difficulty-card medium" data-difficulty="medium">
+        <div class="diff-icon">🔥</div><h3>Moyen</h3>
+        <p>25 sec par question</p><p class="diff-pts">+200 pts de base</p>
+        <div class="diff-stars">★★☆</div>
+      </div>
+      <div class="difficulty-card hard" data-difficulty="hard">
+        <div class="diff-icon">💀</div><h3>Difficile</h3>
+        <p>20 sec par question</p><p class="diff-pts">+300 pts de base</p>
+        <div class="diff-stars">★★★</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== SCREEN: QUIZ ===== -->
+  <div id="screen-quiz" class="screen">
+    <div class="quiz-header">
+      <div class="quiz-score">
+        <span class="score-label">Score</span>
+        <span class="score-value" id="score-display">0</span>
+      </div>
+      <div class="quiz-progress">
+        <div class="progress-track"><div class="progress-fill" id="progress-fill"></div></div>
+        <span class="progress-text" id="progress-text">1 / 10</span>
+      </div>
+      <div class="quiz-lives" id="quiz-lives">
+        <span class="life" id="life-1">❤️</span>
+        <span class="life" id="life-2">❤️</span>
+        <span class="life" id="life-3">❤️</span>
+      </div>
+    </div>
+
+    <div class="timer-wrapper">
+      <div class="timer-circle">
+        <svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+          <circle class="timer-bg" cx="60" cy="60" r="52"/>
+          <circle class="timer-arc" id="timer-arc" cx="60" cy="60" r="52"
+            stroke-dasharray="326.73" stroke-dashoffset="0"/>
+        </svg>
+        <div class="timer-inner">
+          <span id="timer-number">30</span>
+          <span class="timer-sec">sec</span>
+        </div>
+      </div>
+      <div class="streak-badge" id="streak-badge">🔥 x<span id="streak-count">0</span></div>
+    </div>
+
+    <div class="question-area">
+      <div class="question-meta">
+        <span class="q-category" id="q-category">Science</span>
+        <span class="q-difficulty" id="q-difficulty">Facile</span>
+        <span class="q-number" id="q-number">Q1</span>
+      </div>
+      <div class="question-card">
+        <p id="question-text">Chargement...</p>
+      </div>
+    </div>
+
+    <div class="answers-grid" id="answers-grid">
+      <button class="answer-btn" data-index="0"><span class="answer-letter">A</span><span class="answer-text"></span></button>
+      <button class="answer-btn" data-index="1"><span class="answer-letter">B</span><span class="answer-text"></span></button>
+      <button class="answer-btn" data-index="2"><span class="answer-letter">C</span><span class="answer-text"></span></button>
+      <button class="answer-btn" data-index="3"><span class="answer-letter">D</span><span class="answer-text"></span></button>
+    </div>
+
+    <div class="quiz-footer">
+      <button id="btn-hint" class="btn btn-hint">💡 Indice (<span id="hints-left">3</span> restants)</button>
+    </div>
+
+    <div id="explanation-overlay" class="explanation-overlay hidden">
+      <div class="explanation-card">
+        <div id="answer-result-icon" class="result-icon"></div>
+        <h3 id="answer-result-title"></h3>
+        <p id="explanation-text"></p>
+        <div class="score-gained" id="score-gained"></div>
+        <button id="btn-next" class="btn btn-primary">Question suivante →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== SCREEN: RESULTS ===== -->
+  <div id="screen-results" class="screen">
+    <div class="results-wrap">
+      <div id="confetti-area"></div>
+      <div class="trophy-icon" id="result-trophy">🏆</div>
+      <h1 id="result-title">Excellent !</h1>
+      <div class="grade-badge" id="grade-badge">A</div>
+      <div class="final-score-display">
+        <span class="final-label">Score Final</span>
+        <span class="final-value" id="final-score-value">0</span>
+      </div>
+      <div class="stats-row">
+        <div class="stat-box"><span class="stat-val" id="stat-correct">0</span><span class="stat-lbl">✅ Correctes</span></div>
+        <div class="stat-box"><span class="stat-val" id="stat-wrong">0</span><span class="stat-lbl">❌ Fausses</span></div>
+        <div class="stat-box"><span class="stat-val" id="stat-accuracy">0%</span><span class="stat-lbl">🎯 Précision</span></div>
+        <div class="stat-box"><span class="stat-val" id="stat-streak">0</span><span class="stat-lbl">🔥 Série max</span></div>
+      </div>
+      <div class="result-buttons">
+        <button id="btn-play-again" class="btn btn-primary">🔄 Rejouer</button>
+        <button id="btn-change-category" class="btn btn-secondary">📂 Changer</button>
+        <button id="btn-home-results" class="btn btn-secondary">🏠 Accueil</button>
+        <button id="btn-leaderboard-results" class="btn btn-gold">🏆 Classement</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== SCREEN: LEADERBOARD ===== -->
+  <div id="screen-leaderboard" class="screen">
+    <div class="screen-header">
+      <button class="btn-back" data-back="home">← Retour</button>
+      <h1>🏆 Classement</h1>
+      <p class="screen-sub">Meilleurs scores de tous les temps</p>
+    </div>
+    <div class="lb-filters">
+      <button class="lb-filter active" data-filter="all">Tous</button>
+      <button class="lb-filter" data-filter="science">🔬</button>
+      <button class="lb-filter" data-filter="history">📜</button>
+      <button class="lb-filter" data-filter="geography">🌍</button>
+      <button class="lb-filter" data-filter="sports">⚽</button>
+      <button class="lb-filter" data-filter="entertainment">🎬</button>
+      <button class="lb-filter" data-filter="technology">💻</button>
+      <button class="lb-filter" data-filter="math">🔢</button>
+    </div>
+    <div class="leaderboard-list" id="leaderboard-list">
+      <p class="lb-empty">Aucun score pour le moment. Soyez le premier !</p>
+    </div>
+    <button id="btn-clear-lb" class="btn btn-danger">🗑️ Effacer les scores</button>
+  </div>
+
+  <!-- ===== GAME OVER MODAL ===== -->
+  <div id="gameover-modal" class="modal hidden">
+    <div class="modal-card">
+      <div class="modal-icon">💔</div>
+      <h2>Game Over !</h2>
+      <p>Vous n'avez plus de vies.</p>
+      <p>Score : <strong id="gameover-score">0</strong></p>
+      <div class="btn-group">
+        <button id="btn-gameover-retry" class="btn btn-primary">🔄 Réessayer</button>
+        <button id="btn-gameover-home" class="btn btn-secondary">🏠 Accueil</button>
+      </div>
+    </div>
+  </div>
+  <div id="modal-backdrop" class="modal-backdrop hidden"></div>
+
+  <script src="js/questions.js"></script>
+  <script src="js/game.js"></script>
+</body>
+</html>
