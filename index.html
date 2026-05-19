@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>QuizHero — Testez vos connaissances</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🧠</text></svg>" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <canvas id="confetti-canvas"></canvas>
+
+  <div id="app">
+
+    <!-- ══ WELCOME SCREEN ══════════════════════════════════════ -->
+    <div id="welcome-screen" class="screen active">
+      <div class="card">
+        <div class="logo">
+          <span class="logo-icon">🧠</span>
+          <h1>QuizHero</h1>
+          <p>Testez vos connaissances sur 5 thèmes</p>
+        </div>
+
+        <p class="section-title">Choisissez une catégorie</p>
+        <div id="categories-grid" class="categories"></div>
+
+        <p class="section-title">Difficulté</p>
+        <div class="difficulty-row">
+          <button class="diff-btn" data-diff="facile">😌 Facile<br><small>20s · 5 pts</small></button>
+          <button class="diff-btn" data-diff="normal">🎯 Normal<br><small>15s · 10 pts</small></button>
+          <button class="diff-btn" data-diff="difficile">🔥 Difficile<br><small>10s · 20 pts</small></button>
+        </div>
+
+        <button id="start-btn" class="btn btn-primary" disabled>
+          Lancer le quiz →
+        </button>
+      </div>
+    </div>
+
+    <!-- ══ QUIZ SCREEN ═════════════════════════════════════════ -->
+    <div id="quiz-screen" class="screen">
+      <div class="card">
+        <div class="quiz-header">
+          <span id="cat-badge" class="category-badge"></span>
+          <span id="q-counter" class="question-counter"></span>
+        </div>
+
+        <div class="timer-wrap">
+          <div class="timer-ring">
+            <svg width="72" height="72" viewBox="0 0 72 72">
+              <circle class="timer-bg" cx="36" cy="36" r="32" />
+              <circle id="timer-fg" class="timer-fg" cx="36" cy="36" r="32" />
+            </svg>
+            <span id="timer-value" class="timer-value">15</span>
+          </div>
+        </div>
+
+        <div class="progress-bar">
+          <div id="progress-fill" class="progress-fill" style="width:0%"></div>
+        </div>
+
+        <div id="score-live" class="score-live">Score : 0</div>
+
+        <p id="question-text" class="question-text"></p>
+
+        <div id="choices" class="choices"></div>
+
+        <div id="feedback" class="feedback"></div>
+      </div>
+    </div>
+
+    <!-- ══ RESULTS SCREEN ══════════════════════════════════════ -->
+    <div id="results-screen" class="screen">
+      <div class="card">
+        <div class="results-header">
+          <span id="result-emoji" class="result-emoji">🎉</span>
+          <h2 id="result-msg"></h2>
+          <p id="result-sub"></p>
+        </div>
+
+        <div class="score-big">
+          <div id="score-number" class="score-number">0</div>
+          <div id="score-max" class="score-label"></div>
+        </div>
+
+        <div class="stats-grid">
+          <div class="stat-card">
+            <span id="stat-correct" class="stat-value stat-good">0</span>
+            <span class="stat-key">Correctes</span>
+          </div>
+          <div class="stat-card">
+            <span id="stat-wrong" class="stat-value stat-bad">0</span>
+            <span class="stat-key">Erreurs</span>
+          </div>
+          <div class="stat-card">
+            <span id="stat-timeout" class="stat-value" style="color:#fbbf24">0</span>
+            <span class="stat-key">Timeouts</span>
+          </div>
+        </div>
+
+        <div class="stats-grid" style="grid-template-columns:1fr;margin-bottom:24px">
+          <div class="stat-card">
+            <span id="stat-time" class="stat-value stat-time">0s</span>
+            <span class="stat-key">Temps moyen par question</span>
+          </div>
+        </div>
+
+        <div class="results-actions">
+          <button id="retry-btn" class="btn btn-primary">🔄 Rejouer</button>
+          <button id="review-btn" class="btn btn-outline">📋 Revoir les réponses</button>
+        </div>
+        <br>
+        <button id="menu-btn" class="btn btn-outline">🏠 Menu principal</button>
+      </div>
+    </div>
+
+    <!-- ══ REVIEW SCREEN ═══════════════════════════════════════ -->
+    <div id="review-screen" class="screen">
+      <div class="card">
+        <div class="review-title">📋 Correction détaillée</div>
+        <div id="review-list"></div>
+        <br>
+        <button id="back-results-btn" class="btn btn-outline">← Retour aux résultats</button>
+      </div>
+    </div>
+
+  </div>
+
+  <script src="questions.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
